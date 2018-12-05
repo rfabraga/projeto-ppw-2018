@@ -30,6 +30,9 @@ public class Transacao {
         this.cartao = cartao;
     }
     
+    public Transacao() {
+    }
+    
     public int getId() {
         return id;
     }
