@@ -7,6 +7,7 @@ package projetopagamento.controladores;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Date;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -40,37 +41,37 @@ public class CartoesServlet extends HttpServlet {
         
         try {
             dao = new CartaoDAO();
+            UsuarioDAO usuarioDAO = new UsuarioDAO();
             
             if (acao.equals("cadastrar")) {
-                String  numero  = request.getParameter("numero");
-                String  agencia  = request.getParameter("agencia");
-                int id_usu  = Integer.parseInt(request.getParameter("id_usu"));
                 
-                UsuarioDAO usuarioDAO = new UsuarioDAO();
-                Usuario usuario = usuarioDAO.obterPorId(id_usu);
+                Cartao cartao = new Cartao();
+                cartao.setNumero(Integer.parseInt(request.getParameter("numero")));
+                cartao.setUsuario(usuarioDAO.obterPorId(Integer.parseInt(request.getParameter("usuario"))));
+                cartao.setBandeira(request.getParameter("bandeira"));
+                cartao.setCvv(Integer.parseInt(request.getParameter("cvv")));
+                cartao.setDataVencimento(request.getParameter("dataVencimento"));
+                cartao.setNomeTitular(request.getParameter("nomeTitular"));
                 
-                Cartao c = new Cartao();
-                c.setNumero(numero);
-                c.setAgencia(agencia);
-                c.setUsuario(usuario);
+                dao.salvar(cartao);
                 
-                dao.salvar(c);
                 disp = request.getRequestDispatcher("/views/contas/cadastrar.jsp");
+                
             } else if (acao.equals("editar")) {
-                String  numero  = request.getParameter("numero");
-                String  agencia  = request.getParameter("agencia");
-                int id_usu  = Integer.parseInt(request.getParameter("id_usu"));
                 
-                UsuarioDAO usuarioDAO = new UsuarioDAO();
-                Usuario usuario = usuarioDAO.obterPorId(id_usu);
+                Cartao cartao = new Cartao();
+                cartao.setId(Integer.parseInt(request.getParameter("id")));
+                cartao.setNumero(Integer.parseInt(request.getParameter("numero")));
+                cartao.setUsuario(usuarioDAO.obterPorId(Integer.parseInt(request.getParameter("usuario"))));
+                cartao.setBandeira(request.getParameter("bandeira"));
+                cartao.setCvv(Integer.parseInt(request.getParameter("cvv")));
+                cartao.setDataVencimento(request.getParameter("dataVencimento"));
+                cartao.setNomeTitular(request.getParameter("nomeTitular"));
                 
-                Cartao c = new Cartao();
-                c.setNumero(numero);
-                c.setAgencia(agencia);
-                c.setUsuario(usuario);
+                dao.atualizar(cartao);
                 
-                dao.salvar(c);
-                disp = request.getRequestDispatcher("/views/contas/editar.jsp"); 
+                disp = request.getRequestDispatcher("/views/contas/editar.jsp");
+                
             } else if (acao.equals("excluir")) {
                 int id = Integer.parseInt(request.getParameter("id"));
                 

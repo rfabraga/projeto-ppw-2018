@@ -138,8 +138,8 @@ public class TransacaoDAO extends DAO<Transacao> {
        
         if(rs.next()){
             UsuarioDAO usuDAO = new UsuarioDAO();
-            //ContaDAO cctDAO = new ContaDAO();
-            //CartaoDAO cartDAO = new CartaoDAO();
+            ContaDAO cctDAO = new ContaDAO();
+            CartaoDAO cartDAO = new CartaoDAO();
 
             Usuario dest = new Usuario();
             dest = usuDAO.obterPorId(rs.getInt("destinatario"));
@@ -148,12 +148,10 @@ public class TransacaoDAO extends DAO<Transacao> {
             dest = usuDAO.obterPorId(rs.getInt("remetente"));
 
             Conta cb = new Conta();
-            cb.setId(rs.getInt("contaBeneficiada"));
-            //cb = cctDAO.obetPorId(rs.getInt("contaBeneficiada"));
+            cb = cctDAO.obterPorId(rs.getInt("contaBeneficiada"));
 
             Cartao cart = new Cartao();
-            cart.setId(rs.getInt("cartao"));
-            //cart = cartDAO.obetPorId(rs.getInt("cartao"));
+            cart = cartDAO.obterPorId(rs.getInt("cartao"));
 
             t.setId(rs.getInt("id"));
             t.setData(rs.getDate("data"));
