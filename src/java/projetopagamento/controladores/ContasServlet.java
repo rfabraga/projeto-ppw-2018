@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package projetopagamento.controladores;
 
 import java.io.IOException;
@@ -17,21 +12,8 @@ import projetopagamento.dao.UsuarioDAO;
 import projetopagamento.entidades.Conta;
 import projetopagamento.entidades.Usuario;
 
-/**
- *
- * @author Pichau
- */
 public class ContasServlet extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String acao = request.getParameter("acao");
@@ -55,22 +37,24 @@ public class ContasServlet extends HttpServlet {
                 c.setUsuario(usuario);
                 
                 dao.salvar(c);
-                disp = request.getRequestDispatcher("/views/contas/cadastrar.jsp");
+                
+                String redirect = "/processaUsuarios?acao=prepEdicao&id=" + id_usu;
+                disp = request.getRequestDispatcher(redirect);
             } else if (acao.equals("editar")) {
+                int id  = Integer.parseInt(request.getParameter("id"));
                 String  numero  = request.getParameter("numero");
                 String  agencia  = request.getParameter("agencia");
                 int id_usu  = Integer.parseInt(request.getParameter("id_usu"));
                 
-                UsuarioDAO usuarioDAO = new UsuarioDAO();
-                Usuario usuario = usuarioDAO.obterPorId(id_usu);
-                
                 Conta c = new Conta();
+                c.setId(id);
                 c.setNumero(numero);
                 c.setAgencia(agencia);
-                c.setUsuario(usuario);
                 
-                dao.salvar(c);
-                disp = request.getRequestDispatcher("/views/contas/editar.jsp"); 
+                dao.atualizar(c);
+                
+                String redirect = "/processaUsuarios?acao=prepEdicao&id=" + id_usu;
+                disp = request.getRequestDispatcher(redirect); 
             } else if (acao.equals("excluir")) {
                 int id = Integer.parseInt(request.getParameter("id"));
                 
@@ -79,12 +63,19 @@ public class ContasServlet extends HttpServlet {
                 
                 dao.excluir(c);
                 disp = request.getRequestDispatcher("/views/usuarios/editar.jsp");
-            } else if (acao.equals("prepAlteracao")) {
+            } else if (acao.equals("prepEdicao")) {
                 int id = Integer.parseInt(request.getParameter("id"));
-                Conta c = dao.obterPorId(id);
-                request.setAttribute("conta", c);
+                int id_usu = Integer.parseInt(request.getParameter("id_usu"));
+                Conta conta = dao.obterPorId(id);
+                request.setAttribute("conta", conta);
+                request.setAttribute("id_usu", id_usu);
                 
                 disp = request.getRequestDispatcher("/views/contas/editar.jsp");
+            } else if (acao.equals("prepCadastro")) {
+                int id = Integer.parseInt(request.getParameter("id_usu"));
+                request.setAttribute("id_usu", id);
+                
+                disp = request.getRequestDispatcher("/views/contas/cadastrar.jsp");
             }
         } catch (SQLException exc) {
             exc.printStackTrace();

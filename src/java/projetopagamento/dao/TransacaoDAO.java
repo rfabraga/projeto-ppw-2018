@@ -1,11 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package projetopagamento.dao;
 
-import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,10 +9,7 @@ import projetopagamento.entidades.Cartao;
 import projetopagamento.entidades.Conta;
 import projetopagamento.entidades.Transacao;
 import projetopagamento.entidades.Usuario;
-/**
- *
- * @author Lucas Sercon
- */
+
 public class TransacaoDAO extends DAO<Transacao> {
     
     public TransacaoDAO() throws SQLException {
@@ -28,11 +19,11 @@ public class TransacaoDAO extends DAO<Transacao> {
     public void salvar(Transacao object) throws SQLException {
         PreparedStatement stmt = getConnection().prepareStatement(
             "INSERT INTO "
-            + "transacao (data, valor, destinatario, remetente, contaBeneficiada, cartao)"
+            + "transacao (data, valor, id_dest, id_rem, id_contaben, id_cartao)"
             + "VALUES(?, ?, ?, ?, ?, ?);"
         );
         
-        stmt.setDate(1, new Date(object.getData().getTime()));
+        stmt.setString(1, object.getData());
         stmt.setFloat(2, object.getValor());
         stmt.setInt(3, object.getDestinatario().getId());
         stmt.setInt(4, object.getRemetente().getId());
@@ -48,11 +39,11 @@ public class TransacaoDAO extends DAO<Transacao> {
         PreparedStatement stmt = getConnection().prepareStatement(
             "UPDATE transacao "
             + "SET "
-            + "data = ?, valor = ?, destinatario = ?, remetente = ?, contaBeneficiada = ?, cartao = ? "
+            + "data = ?, valor = ?, id_dest = ?, id_rem = ?, id_contaben = ?, id_cartao = ? "
             + "WHERE id = ?;"
         );
         
-        stmt.setDate(1, new Date(object.getData().getTime()));
+        stmt.setString(1, object.getData());
         stmt.setFloat(2, object.getValor());
         stmt.setInt(3, object.getDestinatario().getId());
         stmt.setInt(4, object.getRemetente().getId());
@@ -90,30 +81,28 @@ public class TransacaoDAO extends DAO<Transacao> {
             Transacao t = new Transacao();
             
             UsuarioDAO usuDAO = new UsuarioDAO();
-            //ContaDAO cctDAO = new UsuarioDAO();
-            //CartaoDAO cartDAO = new CartaoDAO();
+            ContaDAO cctDAO = new ContaDAO();
+            CartaoDAO cartDAO = new CartaoDAO();
             
             Usuario dest = new Usuario();
-            dest = usuDAO.obterPorId(rs.getInt("destinatario"));
+            dest = usuDAO.obterPorId(rs.getInt("id_dest"));
             
             Usuario rem = new Usuario();
-            dest = usuDAO.obterPorId(rs.getInt("remetente"));
+            rem = usuDAO.obterPorId(rs.getInt("id_rem"));
             
             Conta cb = new Conta();
-            cb.setId(rs.getInt("contaBeneficiada"));
-            //cb = cctDAO.obetPorId(rs.getInt("contaBeneficiada"));
+            cb = cctDAO.obterPorId(rs.getInt("id_contaben"));
             
-            Cartao cart = new Cartao();
-            cart.setId(rs.getInt("cartao"));
-            //cart = cartDAO.obetPorId(rs.getInt("cartao"));
+            Cartao cartao = new Cartao();
+            cartao = cartDAO.obterPorId(rs.getInt("id_cartao"));
             
             t.setId(rs.getInt("id"));
-            t.setData(rs.getDate("data"));
+            t.setData(rs.getString("data"));
             t.setValor(rs.getFloat("valor"));
             t.setDestinatario(dest);
             t.setRemetente(rem);
             t.setContaBeneficiada(cb);
-            t.setCartao(cart);
+            t.setCartao(cartao);
             
             lista.add(t);
         }
@@ -142,19 +131,19 @@ public class TransacaoDAO extends DAO<Transacao> {
             CartaoDAO cartDAO = new CartaoDAO();
 
             Usuario dest = new Usuario();
-            dest = usuDAO.obterPorId(rs.getInt("destinatario"));
+            dest = usuDAO.obterPorId(rs.getInt("id_dest"));
 
             Usuario rem = new Usuario();
-            dest = usuDAO.obterPorId(rs.getInt("remetente"));
+            rem = usuDAO.obterPorId(rs.getInt("id_rem"));
 
             Conta cb = new Conta();
-            cb = cctDAO.obterPorId(rs.getInt("contaBeneficiada"));
+            cb = cctDAO.obterPorId(rs.getInt("id_contaben"));
 
             Cartao cart = new Cartao();
-            cart = cartDAO.obterPorId(rs.getInt("cartao"));
+            cart = cartDAO.obterPorId(rs.getInt("id_cartao"));
 
             t.setId(rs.getInt("id"));
-            t.setData(rs.getDate("data"));
+            t.setData(rs.getString("data"));
             t.setValor(rs.getFloat("valor"));
             t.setDestinatario(dest);
             t.setRemetente(rem);

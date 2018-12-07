@@ -1,14 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package projetopagamento.controladores;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.Date;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -18,25 +11,14 @@ import projetopagamento.dao.CartaoDAO;
 import projetopagamento.dao.ContaDAO;
 import projetopagamento.dao.TransacaoDAO;
 import projetopagamento.dao.UsuarioDAO;
+import projetopagamento.entidades.Cartao;
 import projetopagamento.entidades.Conta;
 import projetopagamento.entidades.Transacao;
 import projetopagamento.entidades.Usuario;
 
-/**
- *
- * @author  Lucas Sercon
- */
+
 public class TransacoesServlet extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
@@ -51,35 +33,69 @@ public class TransacoesServlet extends HttpServlet {
             CartaoDAO cartaoDAO = new CartaoDAO();
             
             
-            if (acao.equals("cadastrar")) {     
+            if (acao.equals("cadastrar")) {   
+                
+                String data = request.getParameter("data");
+                float valor = Float.parseFloat(request.getParameter("valor"));
+                int id_dest = Integer.parseInt(request.getParameter("destinatario"));
+                int id_rem = Integer.parseInt(request.getParameter("remetente"));
+                int id_contaben = Integer.parseInt(request.getParameter("beneficiada"));
+                int id_cartao = Integer.parseInt(request.getParameter("cartao"));
+                
+                Usuario destinatario = new Usuario();
+                Usuario remetente = new Usuario();
+                Conta beneficiada = new Conta();
+                Cartao cartao = new Cartao();
+                
+                destinatario = usuarioDAO.obterPorId(id_dest);
+                remetente = usuarioDAO.obterPorId(id_rem);
+                beneficiada = contaDAO.obterPorId(id_contaben);
+                cartao = cartaoDAO.obterPorId(id_cartao);
                 
                 Transacao transacao = new Transacao();
-                transacao.setData(new Date(request.getParameter("data")));
-                transacao.setContaBeneficiada(contaDAO.obterPorId(Integer.parseInt(request.getParameter("contaBeneficiada"))));
-                transacao.setDestinatario(usuarioDAO.obterPorId(Integer.parseInt(request.getParameter("destinatario"))));
-                transacao.setRemetente(usuarioDAO.obterPorId(Integer.parseInt(request.getParameter("remetente"))));
-                transacao.setCartao(cartaoDAO.obterPorId(Integer.parseInt(request.getParameter("cartao"))));
-                transacao.setValor(Float.valueOf("valor"));
+                transacao.setData(request.getParameter("data"));
+                transacao.setValor(valor);
+                transacao.setDestinatario(destinatario);
+                transacao.setRemetente(remetente);
+                transacao.setContaBeneficiada(beneficiada);
+                transacao.setCartao(cartao);
                 
                 transacaoDAO.salvar(transacao);
                 
-                disp = request.getRequestDispatcher("/views/transacoes/cadastrar.jsp");
+                disp = request.getRequestDispatcher("/views/transacoes/index.jsp");
                 
             } else if (acao.equals("editar")) {
+                int id = Integer.parseInt(request.getParameter("id"));
+                String data = request.getParameter("data");
+                float valor = Float.parseFloat(request.getParameter("valor"));
+                int id_dest = Integer.parseInt(request.getParameter("destinatario"));
+                int id_rem = Integer.parseInt(request.getParameter("remetente"));
+                int id_contaben = Integer.parseInt(request.getParameter("beneficiada"));
+                int id_cartao = Integer.parseInt(request.getParameter("cartao"));
+                
+                Usuario destinatario = new Usuario();
+                Usuario remetente = new Usuario();
+                Conta beneficiada = new Conta();
+                Cartao cartao = new Cartao();
+                
+                destinatario = usuarioDAO.obterPorId(id_dest);
+                remetente = usuarioDAO.obterPorId(id_rem);
+                beneficiada = contaDAO.obterPorId(id_contaben);
+                cartao = cartaoDAO.obterPorId(id_cartao);
                 
                 Transacao transacao = new Transacao();
-                
-                transacao.setId(Integer.parseInt(request.getParameter("id")));
-                transacao.setData(new Date(request.getParameter("data")));
-                transacao.setContaBeneficiada(contaDAO.obterPorId(Integer.parseInt(request.getParameter("contaBeneficiada"))));
-                transacao.setDestinatario(usuarioDAO.obterPorId(Integer.parseInt(request.getParameter("destinatario"))));
-                transacao.setRemetente(usuarioDAO.obterPorId(Integer.parseInt(request.getParameter("remetente"))));
-                transacao.setCartao(cartaoDAO.obterPorId(Integer.parseInt(request.getParameter("cartao"))));
-                transacao.setValor(Float.valueOf("valor"));        
+                transacao.setId(id);
+                transacao.setData(request.getParameter("data"));
+                transacao.setValor(valor);
+                transacao.setDestinatario(destinatario);
+                transacao.setRemetente(remetente);
+                transacao.setContaBeneficiada(beneficiada);
+                transacao.setCartao(cartao);
                 
                 transacaoDAO.atualizar(transacao);
                 
-                disp = request.getRequestDispatcher("/views/transacoes/editar.jsp"); 
+                disp = request.getRequestDispatcher("/views/transacoes/index.jsp");
+                 
                 
             } else if (acao.equals("excluir")) {
                 
@@ -90,18 +106,15 @@ public class TransacoesServlet extends HttpServlet {
                 
                 transacaoDAO.excluir(transacao);
                 
-                disp = request.getRequestDispatcher("/views/transacoes/excluir.jsp");
+                disp = request.getRequestDispatcher("/views/transacoes/index.jsp");
                 
-            } 
-            /*else if (acao.equals("prepAlteracao")) {
+            } else if (acao.equals("prepEdicao")) {
                 int id = Integer.parseInt(request.getParameter("id"));
-                Conta c = transacaoDAO.obterPorId(id);
-                request.setAttribute("conta", c);
+                Transacao t = transacaoDAO.obterPorId(id);
+                request.setAttribute("transacao", t);
                 
-                disp = request.getRequestDispatcher("/views/contas/editar.jsp");
-            } 
-            Nao entendi o que era isso entao comentei. Ass: Lucas 
-            */
+                disp = request.getRequestDispatcher("/views/transacoes/editar.jsp");
+            }
         } catch (SQLException exc) {
             exc.printStackTrace();
         } finally {

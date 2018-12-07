@@ -1,9 +1,3 @@
-<%-- 
-    Document   : footer
-    Created on : 10/11/2018, 18:08:18
-    Author     : Pichau
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <footer class="footer bg-light m-top">

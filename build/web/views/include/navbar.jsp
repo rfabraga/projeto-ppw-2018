@@ -1,9 +1,3 @@
-<%-- 
-    Document   : navbar
-    Created on : 10/11/2018, 18:08:26
-    Author     : Pichau
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <nav class="navbar navbar-expand-lg navbar-light bg-success">
@@ -24,8 +18,5 @@
           <a class="nav-link" href="${pageContext.request.contextPath}/views/transacoes/index.jsp">Transferências</a>
         </li>
       </ul>
-      <form class="form-inline my-2 my-lg-0">
-        <button class="btn btn-light my-2 my-sm-0" type="submit">Logout</button>
-      </form>
     </div>
  </nav>

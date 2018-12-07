@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package projetopagamento.dao;
 
 import java.sql.PreparedStatement;
@@ -12,10 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import projetopagamento.entidades.Conta;
 
-/**
- *
- * @author Rafael
- */
 public class ContaDAO extends DAO<Conta> {
 
     public ContaDAO() throws SQLException {
@@ -40,9 +31,9 @@ public class ContaDAO extends DAO<Conta> {
     @Override
     public void atualizar(Conta object) throws SQLException {
         PreparedStatement stmt = getConnection().prepareStatement(
-            "UPDATE conta"
+            "UPDATE conta "
             + "SET "
-            + "nome = ?, agencia = ? "
+            + "numero = ?, agencia = ? "
             + "WHERE id = ?;"
         );
         
@@ -81,7 +72,7 @@ public class ContaDAO extends DAO<Conta> {
             
             c.setId(rs.getInt("id"));
             c.setNumero(rs.getString("numero"));
-            c.setAgencia(rs.getString("valor"));
+            c.setAgencia(rs.getString("agencia"));
             
             lista.add(c);
         }
@@ -130,7 +121,7 @@ public class ContaDAO extends DAO<Conta> {
             
             c.setId(rs.getInt("id"));
             c.setNumero(rs.getString("numero"));
-            c.setAgencia(rs.getString("valor"));
+            c.setAgencia(rs.getString("agencia"));
             
             lista.add(c);
         }

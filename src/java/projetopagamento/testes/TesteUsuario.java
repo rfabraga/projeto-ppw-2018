@@ -1,22 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package projetopagamento.testes;
 
 import java.sql.SQLException;
-import java.util.Date;
+
 import java.util.List;
 import projetopagamento.dao.UsuarioDAO;
 import projetopagamento.entidades.Cartao;
 import projetopagamento.entidades.Conta;
 import projetopagamento.entidades.Usuario;
 
-/**
- *
- * @author Rafael
- */
 public class TesteUsuario {
     
     static void testeSalvar() {
@@ -24,7 +15,7 @@ public class TesteUsuario {
         usuario.setNome("Nome");
         usuario.setSobrenome("Sobrenome");
         usuario.setCpf("000.000.000-00");
-        usuario.setDataNascimento(new Date());
+        usuario.setDataNascimento("00/00/0000");
         usuario.setEmail("teste@email.com.br");
         usuario.setSenha("testesenha");
         
@@ -53,7 +44,7 @@ public class TesteUsuario {
         usuario.setNome("atualização");
         usuario.setSobrenome("att");
         usuario.setCpf("000.000.000-00");
-        usuario.setDataNascimento(new Date());
+        usuario.setDataNascimento("00/00/0000");
         usuario.setEmail("testeupdate@email.com.br");
         usuario.setSenha("testesenhaupdate");
         

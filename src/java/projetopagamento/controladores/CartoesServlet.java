@@ -1,13 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package projetopagamento.controladores;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Date;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -18,21 +12,9 @@ import projetopagamento.dao.UsuarioDAO;
 import projetopagamento.entidades.Cartao;
 import projetopagamento.entidades.Usuario;
 
-/**
- *
- * @author Pichau
- */
+
 public class CartoesServlet extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String acao = request.getParameter("acao");
@@ -41,37 +23,54 @@ public class CartoesServlet extends HttpServlet {
         
         try {
             dao = new CartaoDAO();
-            UsuarioDAO usuarioDAO = new UsuarioDAO();
             
             if (acao.equals("cadastrar")) {
+                String numero = request.getParameter("numero");
+                String nomeTitular = request.getParameter("nomeTitular");
+                String dataVencimento = request.getParameter("dataVencimento");
+                int cvv = Integer.parseInt(request.getParameter("cvv"));
+                String bandeira = request.getParameter("bandeira");
+                int id_usu = Integer.parseInt(request.getParameter("id_usu"));
+                System.out.println(request.getParameter("id_usu"));
+                
+                UsuarioDAO usuarioDAO = new UsuarioDAO();
+                Usuario usuario = new Usuario();
+                usuario = usuarioDAO.obterPorId(id_usu);
                 
                 Cartao cartao = new Cartao();
-                cartao.setNumero(Integer.parseInt(request.getParameter("numero")));
-                cartao.setUsuario(usuarioDAO.obterPorId(Integer.parseInt(request.getParameter("usuario"))));
-                cartao.setBandeira(request.getParameter("bandeira"));
-                cartao.setCvv(Integer.parseInt(request.getParameter("cvv")));
-                cartao.setDataVencimento(request.getParameter("dataVencimento"));
-                cartao.setNomeTitular(request.getParameter("nomeTitular"));
+                cartao.setNumero(numero);
+                cartao.setNomeTitular(nomeTitular);
+                cartao.setDataVencimento(dataVencimento);
+                cartao.setCvv(cvv);
+                cartao.setBandeira(bandeira);
+                cartao.setUsuario(usuario);
                 
                 dao.salvar(cartao);
                 
-                disp = request.getRequestDispatcher("/views/contas/cadastrar.jsp");
-                
+                String redirect = "/processaUsuarios?acao=prepEdicao&id=" + id_usu;
+                disp = request.getRequestDispatcher(redirect);   
             } else if (acao.equals("editar")) {
+                int id = Integer.parseInt(request.getParameter("id"));
+                String numero = request.getParameter("numero");
+                String nomeTitular = request.getParameter("nomeTitular");
+                String dataVencimento = request.getParameter("dataVencimento");
+                int cvv = Integer.parseInt(request.getParameter("cvv"));
+                String bandeira = request.getParameter("bandeira");
+                int id_usu = Integer.parseInt(request.getParameter("id_usu"));
                 
                 Cartao cartao = new Cartao();
-                cartao.setId(Integer.parseInt(request.getParameter("id")));
-                cartao.setNumero(Integer.parseInt(request.getParameter("numero")));
-                cartao.setUsuario(usuarioDAO.obterPorId(Integer.parseInt(request.getParameter("usuario"))));
-                cartao.setBandeira(request.getParameter("bandeira"));
-                cartao.setCvv(Integer.parseInt(request.getParameter("cvv")));
-                cartao.setDataVencimento(request.getParameter("dataVencimento"));
-                cartao.setNomeTitular(request.getParameter("nomeTitular"));
+                cartao.setId(id);
+                cartao.setNumero(numero);
+                cartao.setNomeTitular(nomeTitular);
+                cartao.setDataVencimento(dataVencimento);
+                cartao.setCvv(cvv);
+                cartao.setBandeira(bandeira);
+                
                 
                 dao.atualizar(cartao);
                 
-                disp = request.getRequestDispatcher("/views/contas/editar.jsp");
-                
+                String redirect = "/processaUsuarios?acao=prepEdicao&id=" + id_usu;
+                disp = request.getRequestDispatcher(redirect);   
             } else if (acao.equals("excluir")) {
                 int id = Integer.parseInt(request.getParameter("id"));
                 
@@ -80,12 +79,19 @@ public class CartoesServlet extends HttpServlet {
                 
                 dao.excluir(c);
                 disp = request.getRequestDispatcher("/views/usuarios/editar.jsp");
-            } else if (acao.equals("prepAlteracao")) {
+            } else if (acao.equals("prepEdicao")) {
                 int id = Integer.parseInt(request.getParameter("id"));
-                Cartao c = dao.obterPorId(id);
-                request.setAttribute("conta", c);
+                int id_usu = Integer.parseInt(request.getParameter("id_usu"));
+                Cartao cartao = dao.obterPorId(id);
+                request.setAttribute("cartao", cartao);
+                request.setAttribute("id_usu", id_usu);
                 
-                disp = request.getRequestDispatcher("/views/contas/editar.jsp");
+                disp = request.getRequestDispatcher("/views/cartoes/editar.jsp");
+            } else if (acao.equals("prepCadastro")) {
+                int id = Integer.parseInt(request.getParameter("id_usu"));
+                request.setAttribute("id_usu", id);
+                
+                disp = request.getRequestDispatcher("/views/cartoes/cadastrar.jsp");
             }
         } catch (SQLException exc) {
             exc.printStackTrace();

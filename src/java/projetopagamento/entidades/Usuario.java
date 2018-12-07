@@ -1,23 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package projetopagamento.entidades;
 
-import java.util.Date;
+
 import java.util.List;
 
-/**
- *
- * @author Rafael
- */
+
 public class Usuario {
     private int id;
     private String nome;
     private String sobrenome;
     private String cpf;
-    private Date dataNascimento;
+    private String dataNascimento;
     private String email;
     private String senha;
     private List<Conta> contas;
@@ -58,11 +50,11 @@ public class Usuario {
         this.cpf = cpf;
     }
 
-    public Date getDataNascimento() {
+    public String getDataNascimento() {
         return dataNascimento;
     }
 
-    public void setDataNascimento(Date dataNascimento) {
+    public void setDataNascimento(String dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
 

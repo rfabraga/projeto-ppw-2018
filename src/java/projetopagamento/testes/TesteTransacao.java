@@ -1,12 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package projetopagamento.testes;
 
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.List;
 import projetopagamento.dao.CartaoDAO;
 import projetopagamento.dao.ContaDAO;
@@ -17,10 +11,6 @@ import projetopagamento.entidades.Conta;
 import projetopagamento.entidades.Transacao;
 import projetopagamento.entidades.Usuario;
 
-/**
- *
- * @author Lucas
- */
 public class TesteTransacao {
     
     static void testeSalvar() {
@@ -45,7 +35,7 @@ public class TesteTransacao {
             cart = cartDAO.obterPorId(1);
 
             Transacao transacao = new Transacao();
-            transacao.setData(new Date());
+            transacao.setData("00/00/0000");
             transacao.setRemetente(remetente);
             transacao.setDestinatario(destinatario);
             transacao.setContaBeneficiada(cct);
@@ -90,7 +80,7 @@ public class TesteTransacao {
             cart = cartDAO.obterPorId(1);
             
             transacao.setId(id);
-            transacao.setData(new Date());
+            transacao.setData("00/00/0000");
             transacao.setRemetente(remetente);
             transacao.setDestinatario(destinatario);
             transacao.setContaBeneficiada(cct);
@@ -196,13 +186,13 @@ public class TesteTransacao {
     }
     
     public static void main(String[] args) {
-        testeSalvar();
+//        testeSalvar();
         
 //        testeAtualizar(1);
 
 //        testeExcluir(2);
         
-//        testeListar();
+        testeListar();
 
 //        testeObterPorId(1);
     }

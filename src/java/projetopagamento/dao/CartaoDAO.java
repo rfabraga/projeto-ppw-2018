@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package projetopagamento.dao;
 
 import java.sql.PreparedStatement;
@@ -12,10 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import projetopagamento.entidades.Cartao;
 
-/**
- *
- * @author Pichau
- */
 public class CartaoDAO extends DAO<Cartao> {
     
     public CartaoDAO() throws SQLException {
@@ -29,7 +20,7 @@ public class CartaoDAO extends DAO<Cartao> {
             + "VALUES(?, ?, ?, ?, ?, ?);"
         );
         
-        stmt.setInt(1, object.getNumero());
+        stmt.setString(1, object.getNumero());
         stmt.setString(2, object.getNomeTitular());
         stmt.setString(3, object.getDataVencimento());
         stmt.setInt(4, object.getCvv());
@@ -43,18 +34,18 @@ public class CartaoDAO extends DAO<Cartao> {
     @Override
     public void atualizar(Cartao object) throws SQLException {
         PreparedStatement stmt = getConnection().prepareStatement(
-            "UPDATE cartao"
+            "UPDATE cartao "
             + "SET "
             + "numero = ?, nome_titular = ?, data_vencimento = ?, cvv = ?, bandeira = ? "
             + "WHERE id = ?;"
         );
         
-        stmt.setInt(1, object.getNumero());
+        stmt.setString(1, object.getNumero());
         stmt.setString(2, object.getNomeTitular());
         stmt.setString(3, object.getDataVencimento());
         stmt.setInt(4, object.getCvv());
         stmt.setString(5, object.getBandeira());
-        stmt.setInt(4, object.getId());
+        stmt.setInt(6, object.getId());
         
         stmt.executeUpdate();
         stmt.close(); 
@@ -86,7 +77,7 @@ public class CartaoDAO extends DAO<Cartao> {
             Cartao c = new Cartao();
             
             c.setId(rs.getInt("id"));
-            c.setNumero(rs.getInt("numero"));
+            c.setNumero(rs.getString("numero"));
             c.setNomeTitular(rs.getString("nome_titular"));
             c.setDataVencimento(rs.getString("data_vencimento"));
             c.setCvv(rs.getInt("cvv"));
@@ -114,7 +105,7 @@ public class CartaoDAO extends DAO<Cartao> {
        
         if(rs.next()){
             c.setId(rs.getInt("id"));
-            c.setNumero(rs.getInt("numero"));
+            c.setNumero(rs.getString("numero"));
             c.setNomeTitular(rs.getString("nome_titular"));
             c.setDataVencimento(rs.getString("data_vencimento"));
             c.setCvv(rs.getInt("cvv"));
@@ -141,7 +132,7 @@ public class CartaoDAO extends DAO<Cartao> {
             Cartao c = new Cartao();
             
             c.setId(rs.getInt("id"));
-            c.setNumero(rs.getInt("numero"));
+            c.setNumero(rs.getString("numero"));
             c.setNomeTitular(rs.getString("nome_titular"));
             c.setDataVencimento(rs.getString("data_vencimento"));
             c.setCvv(rs.getInt("cvv"));

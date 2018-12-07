@@ -18,6 +18,7 @@
         <!-- navbar -->
         <c:import url="./views/include/navbar.jsp" />
         
+        <jsp:useBean id="master" scope="page" class="projetopagamento.servicos.MasterServices" />
         <h3 class="text-center">Usuários</h3>
         
         <div class="container m-top">
@@ -28,7 +29,7 @@
                             Usuários
                         </div>
                         <div class="card-body">
-                            <h5 class="card-title">1258 Cadastrados</h5>
+                            <h5 class="card-title">${master.usuarios} Cadastrados</h5>
                         </div>
                     </div>
                 </div>
@@ -39,7 +40,7 @@
                             Transações
                         </div>
                         <div class="card-body">
-                            <h5 class="card-title">12568 Concluídas</h5>
+                            <h5 class="card-title">${master.transacoes} Concluídas</h5>
                         </div>
                     </div>
                 </div>
@@ -50,7 +51,7 @@
                             Total Movimentado
                         </div>
                         <div class="card-body">
-                            <h5 class="card-title">R$ 125659.63</h5>
+                            <h5 class="card-title">R$ ${master.total}</h5>
                         </div>
                     </div>
                 </div>
