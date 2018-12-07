@@ -20,6 +20,9 @@ import projetopagamento.entidades.Usuario;
  * @author Lucas Sercon
  */
 public class TransacaoDAO extends DAO<Transacao> {
+    
+    public TransacaoDAO() throws SQLException {
+    }
 
     @Override
     public void salvar(Transacao object) throws SQLException {

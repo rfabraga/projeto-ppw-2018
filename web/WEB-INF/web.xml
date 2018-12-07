@@ -1,5 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+    <servlet>
+        <servlet-name>UsuariosServlet</servlet-name>
+        <servlet-class>projetopagamento.controladores.UsuariosServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ContasServlet</servlet-name>
+        <servlet-class>projetopagamento.controladores.ContasServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CartoesServlet</servlet-name>
+        <servlet-class>projetopagamento.controladores.CartoesServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>TransacoesServlet</servlet-name>
+        <servlet-class>projetopagamento.controladores.TransacoesServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UsuariosServlet</servlet-name>
+        <url-pattern>/processaUsuarios</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ContasServlet</servlet-name>
+        <url-pattern>/processaContas</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CartoesServlet</servlet-name>
+        <url-pattern>/processaCartoes</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TransacoesServlet</servlet-name>
+        <url-pattern>/processaTransacoes</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
